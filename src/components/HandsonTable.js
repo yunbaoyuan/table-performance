@@ -6,13 +6,70 @@ import { HotTable } from '@handsontable/react';
 class HandsonTable extends React.PureComponent {
   constructor(props) {
     super(props);
+    this.state = {
+      data :  [{
+        "pk_Printprog": "e83e7eae9ec847af9fbac2346ea608de",
+        "pk_printprogt": "f1ac10fa2b1746a484e3b29325be45cc",
+        "pk_pubitem": "3071190144",
+        "dishCode": "10205",
+        "dishName": "导入的大量菜品1195",
+        "pk_storedept": "Kia",
+        "vstoredeptname": "管理部门",
+        "vkitchenbilltype": null,
+        "vprocesstime": null,
+        "pk_store": null,
+        "vfloor1": null,
+        "vfloor2": null,
+        "vfloor3": null,
+        "dbtime1": null,
+        "detime1": null,
+        "dbtime2": null,
+        "detime2": null,
+        "dbtime3": null,
+        "detime3": null,
+        "assistant": null,
+        "deptType1": null,
+        "deptType2": null,
+        "deptType3": null,
+        "deptTypeName1": [],
+        "deptTypeName2": [],
+        "deptTypeName3": []
+      }, {
+        "pk_Printprog": "f92ef312dc604fa1a9e1921dde390781",
+        "pk_printprogt": "f1ac10fa2b1746a484e3b29325be45cc",
+        "pk_pubitem": "2801100144",
+        "dishCode": "10206",
+        "dishName": "导入的大量菜品1196",
+        "pk_storedept": "101",
+        "vstoredeptname": "管理部门",
+        "vkitchenbilltype": null,
+        "vprocesstime": null,
+        "pk_store": null,
+        "vfloor1": null,
+        "vfloor2": null,
+        "vfloor3": null,
+        "dbtime1": null,
+        "detime1": null,
+        "dbtime2": null,
+        "detime2": null,
+        "dbtime3": null,
+        "detime3": null,
+        "assistant": null,
+        "deptType1": null,
+        "deptType2": null,
+        "deptType3": null,
+        "deptTypeName1": [],
+        "deptTypeName2": [],
+        "deptTypeName3": []
+      }],
+    };
     this.data =  [{
       "pk_Printprog": "e83e7eae9ec847af9fbac2346ea608de",
       "pk_printprogt": "f1ac10fa2b1746a484e3b29325be45cc",
       "pk_pubitem": "3071190144",
       "dishCode": "10205",
       "dishName": "导入的大量菜品1195",
-      "pk_storedept": "101",
+      "pk_storedept": "Kia",
       "vstoredeptname": "管理部门",
       "vkitchenbilltype": null,
       "vprocesstime": null,
@@ -5409,9 +5466,18 @@ class HandsonTable extends React.PureComponent {
     }];
   }
   render() {
-    console.warn('渲染开始')
+    console.warn('渲染开始', this.props.performance.tableList);
+    function customRenderer(instance, td, row, col, prop, value, cellProperties) {
+      console.warn('instance', td, value);
+      // HotTable.renderers.TextRenderer.apply(this, arguments);
+      const content = `<div>${value}</div>`;
+      td.innerHTML = content; 
+      // td.style.backgroundColor = 'yellow';
+    
+      return td;
+    }
     var hotSettings = {
-      data: this.data,
+      data: this.state.data,
       columns: [
         {
           data: 'dishCode',
@@ -5419,14 +5485,18 @@ class HandsonTable extends React.PureComponent {
         },
         {
           data: 'dishName',
+          renderer: customRenderer
         },
         {
-          type: 'dropdown',
-          source: ['yellow', 'red', 'orange', 'green', 'blue', 'gray', 'black', 'white']
+          data: 'pk_storedept',
+          editor: 'select',
+          selectOptions: ['Kia', 'Nissan', 'Toyota', 'Honda'],
+          renderer: customRenderer
         },
         {
-          type: 'dropdown',
-          source: ['yellow', 'red', 'orange', 'green', 'blue', 'gray', 'black', 'white']
+          data: 'assistant',
+          editor: 'select',
+          selectOptions: ['是', '否']
         },
         {
           type: 'dropdown',
@@ -5497,6 +5567,7 @@ class HandsonTable extends React.PureComponent {
     };
     return (
       <div>
+        <p>handsontable</p>
         <HotTable {...hotSettings} />
       </div>
     );
@@ -5504,9 +5575,7 @@ class HandsonTable extends React.PureComponent {
 }
 
 const mapStateToProps = (state) => {
-  return {
-    counter: state.counter,
-  };
+  return state;
 };
 
 export default connect(mapStateToProps)(HandsonTable);
